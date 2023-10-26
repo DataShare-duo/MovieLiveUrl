@@ -8,8 +8,10 @@
 
 
 ## TV端
+- TVbox
 
 ## iOS端
+- WhatUp TV
 
 ## Android端
 
