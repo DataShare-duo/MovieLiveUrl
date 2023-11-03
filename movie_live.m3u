@@ -102,23 +102,21 @@ http://39.134.32.102:6610/270000001111/1110000327/index.m3u8?IASHttpSessionId=OT
 http://angtv.cc/jd/gdlz.php?id=kkse
 
 
-#EXTINF:-1 ,凤凰咨询
+#EXTINF:-1 group-title="国外频道",凤凰咨询
 http://r.jdshipin.com/0Rp07
-#EXTINF:-1 ,凤凰香港
+#EXTINF:-1 group-title="国外频道",凤凰香港
 http://162.19.247.76:22222/live/fenghuangxianggang/index.m3u8
-#EXTINF:-1 ,凤凰卫视
+#EXTINF:-1 group-title="国外频道",凤凰卫视
 http://113.117.74.28:8081/hls/37/index.m3u8
-
-
-#EXTINF:-1 group-title="新闻频道",亚洲新闻
+#EXTINF:-1 group-title="国外频道",亚洲新闻
 https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_3.m3u8
-#EXTINF:-1 group-title="新闻频道",BBC WORLD NEWS
+#EXTINF:-1 group-title="国外频道",BBC WORLD NEWS
 http://103.199.161.254/Content/bbcworld/Live/Channel(BBCworld)/Stream(02)/index.m3u8
-#EXTINF:-1 group-title="新闻频道",CBC News
+#EXTINF:-1 group-title="国外频道",CBC News
 https://dai2.xumo.com/amagi_hls_data_xumo1212A-redboxcbcnews/CDN/playlist.m3u8
-#EXTINF:-1 group-title="新闻频道",CBN News
+#EXTINF:-1 group-title="国外频道",CBN News
 https://bcovlive-a.akamaihd.net/re8d9f611ee4a490a9bb59e52db91414d/us-east-1/734546207001/playlist.m3u8
-#EXTINF:-1 group-title="新闻频道",ABC NEWS
+#EXTINF:-1 group-title="国外频道",ABC NEWS
 https://raw.githubusercontent.com/ChiSheng9/iptv/master/TV24.m3u8
 
 
