@@ -46,6 +46,28 @@ https://iptv.luas.edu.cn/liverespath/bca6167afdef7fc773405c38e695b342c1d1eca0/43
 http://111.20.40.170/PLTV/88888893/224/3221226465/index.m3u8
 #EXTINF:-1 group-title="央视频道",CHC家庭影院
 http://111.20.40.170/PLTV/88888893/224/3221226462/index.m3u8
+#EXTINF:-1 group-title="央视频道",CCTV世界地理
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226071/1/index.m3u8?fmt=ts2hls
+#EXTINF:-1 group-title="央视频道",CCTV兵器科技
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226111/1/index.m3u8?fmt=ts2hls
+#EXTINF:-1 group-title="央视频道",CCTV文化精品
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226100/1/index.m3u8?fmt=ts2hls
+#EXTINF:-1 group-title="央视频道",CCTV风云足球
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226153/1/index.m3u8?fmt=ts2hls
+#EXTINF:-1 group-title="央视频道",CCTV风云音乐
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226083/1/index.m3u8?fmt=ts2hls
+#EXTINF:-1 group-title="央视频道",CCTV央视台球
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226117/1/index.m3u8?fmt=ts2hls
+#EXTINF:-1 group-title="央视频道",CCTV怀旧剧场
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226097/1/index.m3u8?fmt=ts2hls
+
+
+#EXTINF:-1 group-title="教育频道",中国教育1台
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221225723/1/index.m3u8?fmt=ts2hls
+#EXTINF:-1 group-title="教育频道",中国教育2台
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226332/1/index.m3u8?fmt=ts2hls
+#EXTINF:-1 group-title="教育频道",中国教育4台
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221226295/1/index.m3u8?fmt=ts2hls
 
 
 #EXTINF:-1 group-title="卫视频道",浙江卫视
@@ -108,12 +130,12 @@ http://live.zohi.tv/video/s10001-fztv-4/index.m3u8
 http://live.nbs.cn/channels/njtv/sepd/500k.m3u8?zjiangsd
 #EXTINF:-1 group-title="少儿频道",甘肃少儿
 http://39.134.32.102:6610/270000001111/1110000327/index.m3u8?IASHttpSessionId=OTT
-#EXTINF:-1 group-title="少儿频道",卡酷少儿
+#EXTINF:-1 group-title="少儿频道",北京卡酷少儿
 http://39.134.24.162/dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221225743/index.m3u8
 #EXTINF:-1 group-title="少儿频道",广东嘉佳卡通
 http://39.134.24.162/dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226227/index.m3u8
-#EXTINF:-1 group-title="少儿频道",金鹰卡通
-https://live.goodiptv.club/api/cqyx.php?id=jinyingSD
+#EXTINF:-1 group-title="少儿频道",湖南金鹰卡通
+http://cdnrrs.gz.chinamobile.com/PLTV/88888888/224/3221225731/1/index.m3u8?fmt=ts2hls
 
 
 #EXTINF:-1 group-title="国外频道",凤凰咨询
