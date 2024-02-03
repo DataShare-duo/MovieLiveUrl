@@ -5,6 +5,8 @@
 ​
 ​
 batch_check_channel.py
+channel_check.py
+
 *.ipynb
 *.xlsx
 
