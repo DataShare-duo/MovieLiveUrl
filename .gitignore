@@ -4,9 +4,7 @@
 .idea/
 ​
 ​
-batch_check_channel.py
-channel_check.py
-生成直播源.py
+*.py
 
 *.ipynb
 *.xlsx
