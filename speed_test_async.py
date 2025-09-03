@@ -5,7 +5,7 @@ import time
 import re
 from urllib.parse import urljoin, urlparse, parse_qs, urlencode
 
-timeout = aiohttp.ClientTimeout(total=5)
+timeout = aiohttp.ClientTimeout(total=10)
 
 
 async def test_m3u8_speed(m3u8_url: str, session, test_count: int = 3):
