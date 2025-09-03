@@ -2,12 +2,7 @@
 收集的直播源/
 .ipynb_checkpoints/
 .idea/
-​
-​
-batch_check_channel.py
-channel_check.py
-生成直播源.py
 
-*.ipynb
-*.xlsx
+
+
 
