@@ -35,8 +35,13 @@ async def test_m3u8_speed(m3u8_url: str, session, test_count: int = 3):
             content = await resp.text()
 
         # 3. 解析M3U8
-        playlist = m3u8.loads(content)
-        segments = playlist.segments
+        try:
+            playlist = m3u8.loads(content)
+            segments = playlist.segments
+        except Exception as e:
+            print(f"❌ M3U8解析失败: {str(e)} | {final_url}")
+            return None
+
         if not segments:
             print(f"⚠️ 无有效片段: {final_url}")
             return None

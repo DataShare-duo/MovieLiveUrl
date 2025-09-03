@@ -121,8 +121,12 @@ async def async_get_url(url, sem):
                 async with session.get(url, timeout=timeout) as r:
                     status = r.status
                     if status == 200:
-                        # print(url)
-                        return 1
+                        content = await r.text()
+                        if 'feiyang666999/testvideo' in content:  # 剔除测试视频
+                            print(f'测试视频：{url}')
+                            return 0
+                        else:
+                            return 1
                     else:
                         return 0
             except Exception as e:
@@ -143,11 +147,11 @@ async def verify_is_available():
             task = async_get_url(url, sem)
             availability_tasks.append(task)
         else:
-            availability_tasks.append(asyncio.ensure_future(asyncio.sleep(0, result=0)))
+            availability_tasks.append(asyncio.create_task(asyncio.sleep(0, result=0)))
 
     availability_results = await asyncio.gather(*availability_tasks, return_exceptions=True)
 
-    connector = aiohttp.TCPConnector(limit=100, ssl=False)  # 可同时并发多个连接
+    connector = aiohttp.TCPConnector(limit=30, ssl=False)  # 可同时并发多个连接
     async with aiohttp.ClientSession(connector=connector, timeout=timeout) as session:
         speed_tasks = []
         for idx, is_avail in enumerate(availability_results):
@@ -156,7 +160,7 @@ async def verify_is_available():
                 task = test_m3u8_speed(url,session)  # 注意：需修改测速函数支持并发
                 speed_tasks.append(task)
             else:
-                speed_tasks.append(asyncio.ensure_future(asyncio.sleep(0, result=0)))
+                speed_tasks.append(asyncio.create_task(asyncio.sleep(0, result=0)))
 
         speed_results = await asyncio.gather(*speed_tasks, return_exceptions=True)
 
@@ -171,7 +175,7 @@ async def verify_is_available():
 
 
 if __name__ == '__main__':
-    # down_live()
-    # process()
+    down_live()
+    process()
     asyncio.run(verify_is_available())
 
