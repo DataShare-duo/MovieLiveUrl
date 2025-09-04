@@ -197,7 +197,7 @@ def generate_live_source():
     with open('movie_live.txt', 'w', encoding='utf8') as file:
         channel_group = '央视频道'
         file.write(f'央视频道,#genre#\n')
-        for _, channel in data.iterrows():
+        for _, channel in data_filter_sort_head10.iterrows():
             if channel_group != channel["清洗频道组名称"]:
                 file.write('\n\n')
                 channel_group = channel["清洗频道组名称"]
