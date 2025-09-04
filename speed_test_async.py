@@ -8,7 +8,7 @@ from urllib.parse import urljoin, urlparse, parse_qs, urlencode
 timeout = aiohttp.ClientTimeout(total=10)
 
 
-async def test_m3u8_speed(m3u8_url: str, session, test_count: int = 3):
+async def test_m3u8_speed(m3u8_url: str, session, sem, test_count: int = 3):
     """
     100%兼容的M3U8测速函数 - 解决所有404问题
 
@@ -20,105 +20,107 @@ async def test_m3u8_speed(m3u8_url: str, session, test_count: int = 3):
     返回:
     平均速度(KB/s)或None
     """
+
     try:
-        # 1. 获取最终重定向URL（关键！）
-        final_url, base_query = await get_final_url_with_query(m3u8_url, session)
-        if not final_url:
-            return None
-
-        # 2. 下载M3U8内容
-        headers = {"User-Agent": "okHttp/Mod-1.2.0"}
-        async with session.get(final_url, headers=headers, timeout=timeout) as resp:
-            if resp.status != 200:
-                print(f"❌ M3U8获取失败 [{resp.status}]: {final_url}")
+        async with sem:
+            # 1. 获取最终重定向URL（关键！）
+            final_url, base_query = await get_final_url_with_query(m3u8_url, session)
+            if not final_url:
                 return None
-            content = await resp.text()
 
-        # 3. 解析M3U8
-        try:
-            playlist = m3u8.loads(content)
-            segments = playlist.segments
-        except Exception as e:
-            print(f"❌ M3U8解析失败: {str(e)} | {final_url}")
-            return None
+            # 2. 下载M3U8内容
+            headers = {"User-Agent": "okHttp/Mod-1.2.0"}
+            async with session.get(final_url, headers=headers, timeout=timeout) as resp:
+                if resp.status != 200:
+                    print(f"❌ M3U8获取失败 [{resp.status}]: {final_url}")
+                    return None
+                content = await resp.text()
 
-        if not segments:
-            print(f"⚠️ 无有效片段: {final_url}")
-            return None
-        if len(segments) < 3:
-            print(f"⚠️ 片段不足3个: {final_url} (仅{len(segments)}个)")
-            return None
-
-        # === 核心修复：智能URL拼接系统 ===
-        async def get_segment_url(segment_uri):
-            """智能生成片段URL（解决所有404问题）"""
-            # 情况1: 特殊协议直接返回 (rtp://, udp://)
-            if re.match(r'^(rtp|udp|mmsh)://', segment_uri):
-                return segment_uri
-
-            # 情况2: 绝对URL直接返回
-            if segment_uri.startswith(('http://', 'https://')):
-                # 保留原始查询参数（关键修复！）
-                if base_query and '?' not in segment_uri:
-                    delimiter = '&' if '?' in segment_uri else '?'
-                    return f"{segment_uri}{delimiter}{base_query}"
-                return segment_uri
-
-            # 情况3: 动态页面特殊处理 (PHP/ASP等)
-            if '.php' in final_url or '.asp' in final_url:
-                # 示例: Smart.php?id=cctv1 → Smart.php?id=cctv1&segment=segment0001.ts
-                base_path = final_url.split('?')[0]
-                params = parse_qs(urlparse(final_url).query)
-                params['segment'] = segment_uri
-                new_query = urlencode(params, doseq=True)
-                return f"{base_path}?{new_query}"
-
-            # 情况4: 标准相对路径处理
-            segment_url = urljoin(final_url, segment_uri)
-
-            # 保留原始查询参数（终极修复！）
-            if base_query and '?' not in segment_url:
-                delimiter = '&' if '?' in segment_url else '?'
-                return f"{segment_url}{delimiter}{base_query}"
-
-            return segment_url
-
-        # 4. 测试片段
-        speeds = []
-        for i in range(min(test_count, len(segments))):
-            segment_uri = segments[i].uri
-            segment_url = await get_segment_url(segment_uri)
-
+            # 3. 解析M3U8
             try:
-                headers = {
-                    "User-Agent": "okHttp/Mod-1.2.0",
-                    "Referer": final_url
-                }
-                start_time = time.time()
-                async with session.get(segment_url, headers=headers, timeout=timeout) as resp:
-                    if resp.status != 200:
-                        print(f"❌ 片段{i + 1}失败 [{resp.status}]: {segment_url}")
-                        continue
-                    data = await resp.read()
-
-                # 计算速度
-                download_time = time.time() - start_time
-                content_length = len(data)
-                if content_length > 0:
-                    speed = content_length / download_time / 1024  # KB/s
-                    print(f"✅ 片段{i + 1}: {speed:.2f} KB/s | {segment_url}")
-                    speeds.append(speed)
-
+                playlist = m3u8.loads(content)
+                segments = playlist.segments
             except Exception as e:
-                print(f"❌ 片段{i + 1}异常: {str(e)} | {segment_url}")
+                print(f"❌ M3U8解析失败: {str(e)} | {final_url}")
+                return None
 
-        if not speeds:
-            print(f"❌ 所有测试均失败: {final_url}")
-            return None
+            if not segments:
+                print(f"⚠️ 无有效片段: {final_url}")
+                return None
+            if len(segments) < 3:
+                print(f"⚠️ 片段不足3个: {final_url} (仅{len(segments)}个)")
+                return None
 
-        avg_speed = sum(speeds) / len(speeds)
-        print(f"🚀 最终测速: {avg_speed:.2f} KB/s | {final_url}")
-        return avg_speed
+            # === 核心修复：智能URL拼接系统 ===
+            async def get_segment_url(segment_uri):
+                """智能生成片段URL（解决所有404问题）"""
+                # 情况1: 特殊协议直接返回 (rtp://, udp://)
+                if re.match(r'^(rtp|udp|mmsh)://', segment_uri):
+                    return segment_uri
+
+                # 情况2: 绝对URL直接返回
+                if segment_uri.startswith(('http://', 'https://')):
+                    # 保留原始查询参数（关键修复！）
+                    if base_query and '?' not in segment_uri:
+                        delimiter = '&' if '?' in segment_uri else '?'
+                        return f"{segment_uri}{delimiter}{base_query}"
+                    return segment_uri
+
+                # 情况3: 动态页面特殊处理 (PHP/ASP等)
+                if '.php' in final_url or '.asp' in final_url:
+                    # 示例: Smart.php?id=cctv1 → Smart.php?id=cctv1&segment=segment0001.ts
+                    base_path = final_url.split('?')[0]
+                    params = parse_qs(urlparse(final_url).query)
+                    params['segment'] = segment_uri
+                    new_query = urlencode(params, doseq=True)
+                    return f"{base_path}?{new_query}"
+
+                # 情况4: 标准相对路径处理
+                segment_url = urljoin(final_url, segment_uri)
+
+                # 保留原始查询参数（终极修复！）
+                if base_query and '?' not in segment_url:
+                    delimiter = '&' if '?' in segment_url else '?'
+                    return f"{segment_url}{delimiter}{base_query}"
+
+                return segment_url
+
+            # 4. 测试片段
+            speeds = []
+            for i in range(min(test_count, len(segments))):
+                segment_uri = segments[i].uri
+                segment_url = await get_segment_url(segment_uri)
+
+                try:
+                    headers = {
+                        "User-Agent": "okHttp/Mod-1.2.0",
+                        "Referer": final_url
+                    }
+                    start_time = time.time()
+                    async with session.get(segment_url, headers=headers, timeout=timeout) as resp:
+                        if resp.status != 200:
+                            print(f"❌ 片段{i + 1}失败 [{resp.status}]: {segment_url}")
+                            continue
+                        data = await resp.read()
+
+                    # 计算速度
+                    download_time = time.time() - start_time
+                    content_length = len(data)
+                    if content_length > 0:
+                        speed = content_length / download_time / 1024  # KB/s
+                        print(f"✅ 片段{i + 1}: {speed:.2f} KB/s | {segment_url}")
+                        speeds.append(speed)
+
+                except Exception as e:
+                    print(f"❌ 片段{i + 1}异常: {str(e)} | {segment_url}")
+
+            if not speeds:
+                print(f"❌ 所有测试均失败: {final_url}")
+                return None
+
+            avg_speed = sum(speeds) / len(speeds)
+            print(f"🚀 最终测速: {avg_speed:.2f} KB/s | {final_url}")
+            return avg_speed
 
     except Exception as e:
         print(f"🔥 测速过程异常: {str(e)} | {m3u8_url}")
