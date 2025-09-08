@@ -8,6 +8,8 @@
 
 **名词**：直播源、线路，是同一个意思，不同软件里面显示不一样
 
+# 使用教程
+[Python 利用协程整合IPTV直播源](https://mp.weixin.qq.com/s/NSqpSQTl7ZEs3gRM7Z4FFA)
 
 # 各端支持的软件
 
