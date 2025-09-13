@@ -51,8 +51,11 @@ def down_live():
         print(f'正在处理第 {index + 1:2d} 个直播源：{row["直播源地址"]}')
         # print(row['特殊处理'])
         lives = Parser(row['直播源地址'], row['类型'], row['特殊处理']).parse()
-        if lives and (lives[1] is not None):
-            result.extend(lives)
+        try:
+            if lives and (lives[1] is not None):
+                result.extend(lives)
+        except Exception as e:
+            print(f'直播源地址：{row["直播源地址"]} 解析出错，错误信息：{e}')
     print(len(result))
 
     columns = ['来源','频道组', '频道名称', '频道地址', '频道类型']
