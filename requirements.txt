@@ -3,3 +3,4 @@ numpy
 aiohttp
 requests
 m3u8
+openpyxl
