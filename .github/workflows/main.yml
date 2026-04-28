@@ -1,0 +1,32 @@
+name: Daily generate movie_live
+
+# 每天 10:00 Asia/Shanghai (UTC+8) -> 转换为 UTC 为 02:00 -> cron: "0 2 * * *"
+# 如果你想每天 10:00 UTC，请用 "0 10 * * *"
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch: # 保留手动触发入口，便于测试
+  
+concurrency:
+  group: movie-live-daily
+  cancel-in-progress: false
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install requirements (if present)
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run live_source.py
+        run: python live_source.py
