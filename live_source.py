@@ -85,7 +85,7 @@ def process():
     clean_channel_group_id = []
     clean_channel_id = []
 
-    pd_df = pd.read_excel('result.xlsx')
+    pd_df = pd.read_excel('./result.xlsx')
     for index, row in pd_df.iterrows():
         if row['频道名称']:
             clean_name = clean(row['频道名称'])
@@ -138,7 +138,7 @@ async def async_get_url(url, sem):
 
 
 async def verify_is_available():
-    data = pd.read_excel('result_clean.xlsx')
+    data = pd.read_excel('./result_clean.xlsx')
     print('总直播源条数：',len(data))
     sem = asyncio.Semaphore(300)  # 协程并发任务量
 
@@ -171,21 +171,21 @@ async def verify_is_available():
     data['地址是否可用'] = availability_results
     data['测试速度'] = [0 if (r is None) or isinstance(r, Exception) else r or 0 for r in speed_results]
 
-    with pd.ExcelWriter(f'result_clean_verify.xlsx', engine='xlsxwriter',
+    with pd.ExcelWriter(f'./result_clean_verify.xlsx', engine='xlsxwriter',
                         engine_kwargs={'options': {'strings_to_urls': False}}
                         ) as writer:
         data.to_excel(writer, index=False)
 
 
 def generate_live_source():
-    data = pd.read_excel('result_clean_verify.xlsx')
+    data = pd.read_excel('./result_clean_verify.xlsx')
     data_filter = data[data['地址是否可用'] == 1]
     data_filter_sort = data_filter.sort_values(
         by=['频道组排序', '频道排序', '测试速度', '频道类型'],
         ascending=[True, True, False, True]
     )
     data_filter_sort_head10 = data_filter_sort.groupby('清洗频道名称').head(10)
-    with open('movie_live.m3u', 'w', encoding='utf8') as file:
+    with open('./movie_live.m3u', 'w', encoding='utf8') as file:
         file.write('#EXTM3U\n\n')
 
         channel_group = '央视频道'
@@ -197,7 +197,7 @@ def generate_live_source():
             file.write(f'#EXTINF:-1 group-title="{channel["清洗频道组名称"]}",{channel["清洗频道名称"]}\n')
             file.write(f'{channel["频道地址"]}\n')
 
-    with open('movie_live.txt', 'w', encoding='utf8') as file:
+    with open('./movie_live.txt', 'w', encoding='utf8') as file:
         channel_group = '央视频道'
         file.write(f'央视频道,#genre#\n')
         for _, channel in data_filter_sort_head10.iterrows():
