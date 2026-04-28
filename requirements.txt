@@ -4,3 +4,4 @@ aiohttp
 requests
 m3u8
 openpyxl
+xlsxwriter
