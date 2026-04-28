@@ -2,3 +2,4 @@ pandas
 numpy
 aiohttp
 requests
+m3u8
