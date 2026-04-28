@@ -30,3 +30,16 @@ jobs:
 
       - name: Run live_source.py
         run: python live_source.py
+      - name: List workspace (for debugging)
+        run: ls -la .
+
+      - name: Upload generated files (debug)
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated
+          path: |
+            result.xlsx
+            result_clean.xlsx
+            result_clean_verify.xlsx
+            movie_live.m3u
+            movie_live.txt
