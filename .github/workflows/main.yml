@@ -14,9 +14,14 @@ concurrency:
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -33,13 +38,10 @@ jobs:
       - name: List workspace (for debugging)
         run: ls -la .
 
-      - name: Upload generated files (debug)
-        uses: actions/upload-artifact@v4
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v7.1.0
         with:
-          name: generated
-          path: |
-            result.xlsx
-            result_clean.xlsx
-            result_clean_verify.xlsx
-            movie_live.m3u
-            movie_live.txt
+          commit_message: "🤖 自动更新直播源 [skip ci]"
+          commit_user_name: "GitHub Actions Bot"
+          commit_user_email: "actions@github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
