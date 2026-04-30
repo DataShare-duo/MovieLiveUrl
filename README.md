@@ -37,6 +37,9 @@ python live_source.py
 生成的文件直播源一模一样，只是2种不同的文件类型，供不同的app使用
 
 **订阅地址：**
+
+已经配置自动运行，每日更新
+
 - https://raw.githubusercontent.com/DataShare-duo/MovieLiveUrl/refs/heads/main/movie_live.m3u
 
 - https://raw.githubusercontent.com/DataShare-duo/MovieLiveUrl/refs/heads/main/movie_live.txt
