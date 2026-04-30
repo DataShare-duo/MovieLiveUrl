@@ -38,7 +38,7 @@ python live_source.py
 
 **订阅地址：**
 
-已经配置自动运行，每日更新
+已经配置自动运行，**每日更新**
 
 - https://raw.githubusercontent.com/DataShare-duo/MovieLiveUrl/refs/heads/main/movie_live.m3u
 
