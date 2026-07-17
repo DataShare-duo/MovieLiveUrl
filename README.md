@@ -1,4 +1,4 @@
-# MovieLiveUrl
+# IPTV-Source
 
 电影、直播频道播放地址，可以直接利用一些播放器直接观看，而无需下载
 
@@ -40,9 +40,9 @@ python live_source.py
 
 已经配置自动运行，**每日更新**
 
-- https://raw.githubusercontent.com/DataShare-duo/MovieLiveUrl/refs/heads/main/movie_live.m3u
+- https://raw.githubusercontent.com/DataShare-duo/IPTV-Source/refs/heads/main/movie_live.m3u
 
-- https://raw.githubusercontent.com/DataShare-duo/MovieLiveUrl/refs/heads/main/movie_live.txt
+- https://raw.githubusercontent.com/DataShare-duo/IPTV-Source/refs/heads/main/movie_live.txt
 
 # 各端支持的软件
 
