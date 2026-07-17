@@ -1,15 +1,18 @@
 import re
-import pandas as pd
+from pathlib import Path
+import functools
+from datetime import datetime
+
 import aiohttp
 import asyncio
-import functools
+import pandas as pd
 
 from parse_live_source import Parser
 from speed_test_async import test_m3u8_speed
 
 file = '直播源.xlsx'
 timeout = aiohttp.ClientTimeout(total=10)
-
+dt = datetime.today().strftime("%Y%m%d")
 
 def clean(text):
     """
@@ -186,7 +189,8 @@ def generate_live_source():
     )
     data_filter_sort_head10 = data_filter_sort.groupby('清洗频道名称').head(10)
     with open('./movie_live.m3u', 'w', encoding='utf8') as file:
-        file.write('#EXTM3U\n\n')
+        file.write('#EXTM3U\n')
+        file.write(f'# 自动生成于 {dt}\n\n')
 
         channel_group = '央视频道'
         for _, channel in data_filter_sort_head10.iterrows():
@@ -199,6 +203,7 @@ def generate_live_source():
 
     with open('./movie_live.txt', 'w', encoding='utf8') as file:
         channel_group = '央视频道'
+        file.write(f'# 自动生成于 {dt}\n')
         file.write(f'央视频道,#genre#\n')
         for _, channel in data_filter_sort_head10.iterrows():
             if channel_group != channel["清洗频道组名称"]:
@@ -207,6 +212,19 @@ def generate_live_source():
                 file.write(f'{channel["清洗频道组名称"]},#genre#\n')
 
             file.write(f'{channel["清洗频道名称"]},{channel["频道地址"]}\n')
+
+    # 删除中间Excel文件
+    # result.xlsx、result_clean.xlsx、result_clean_verify.xlsx
+    intermediate_files = [
+        "result.xlsx",
+        "result_clean.xlsx",
+        "result_clean_verify.xlsx"
+    ]
+
+    # 批量删除：如果文件存在就删，不存在就静默跳过
+    for filename in intermediate_files:
+        Path(filename).unlink(missing_ok=True)
+
 
 
 if __name__ == '__main__':
