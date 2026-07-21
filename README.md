@@ -44,6 +44,14 @@ python live_source.py
 
 - https://raw.githubusercontent.com/DataShare-duo/IPTV-Source/refs/heads/main/movie_live.txt
 
+**国内订阅地址：**
+
+- https://gh-proxy.org/https://raw.githubusercontent.com/DataShare-duo/IPTV-Source/refs/heads/main/movie_live.m3u
+- https://ghproxy.net/https://raw.githubusercontent.com/DataShare-duo/IPTV-Source/refs/heads/main/movie_live.m3u
+- https://gh-proxy.org/https://raw.githubusercontent.com/DataShare-duo/IPTV-Source/refs/heads/main/movie_live.txt
+- https://ghproxy.net/https://raw.githubusercontent.com/DataShare-duo/IPTV-Source/refs/heads/main/movie_live.txt
+
+
 # 各端支持的软件
 
 各软件的使用方法，可以在网上查找到相关的使用文档，使用起来其实很简单
